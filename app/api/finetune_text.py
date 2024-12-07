@@ -8,7 +8,8 @@ from app.schemas.agent_state import AgentState
 
 router = APIRouter()
 
-llm = AzureChatOpenAI(deployment_name='gpt-4o-mini')
+llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
+
 
 @router.post("/finetune_post/", response_model=response.FineTunedText)
 def finetune_text(request: request.FineTuneRequest):
@@ -32,4 +33,3 @@ def finetune_text(request: request.FineTuneRequest):
     finetuned_text = llm.invoke(prompt).content
 
     return response.FineTunedText(generated_text=finetuned_text)
-

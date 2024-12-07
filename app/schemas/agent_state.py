@@ -1,8 +1,9 @@
 from typing import TypedDict, Union
 from app.schemas.data_models import NewsArticles
 
+
 # Input: NewsArticle
-# Prompt: 
+# Prompt:
 class AgentState(TypedDict):
     user_prompt: str
     generate_text: bool
