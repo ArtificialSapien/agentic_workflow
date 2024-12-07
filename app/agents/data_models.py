@@ -3,6 +3,8 @@ from typing import List
 
 
 class NewsArticle(BaseModel):
+    """Represents a news article"""
+
     title: str = Field(description="The title of the article")
     date: str = Field(description="The date of the article")
     content: str = Field(description="The content of the article")
@@ -13,4 +15,6 @@ class NewsArticle(BaseModel):
 
 
 class NewsArticles(BaseModel):
-    articles: List[NewsArticle] = Field(description="A list of news articles")
+    """Represents a list of news articles"""
+
+    articles: List[NewsArticle] = Field(description="The list of news articles")
