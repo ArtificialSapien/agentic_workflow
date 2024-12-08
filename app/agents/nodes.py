@@ -2,6 +2,7 @@ import os
 import json
 from typing import List
 from typing import TypedDict, Union
+import requests
 
 from langchain_openai import AzureChatOpenAI
 
@@ -10,6 +11,10 @@ from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles
 
+from helper_functions.fetch_templates import fetch_templates
+from helper_functions.meme_selection import meme_selection
+
+from schemas.meme_caption_schema import MemeCaptions
 
 from dotenv import load_dotenv
 
@@ -135,3 +140,61 @@ def image_generator(state: AgentState):
 
     else:
         return {"generated_image_url": "Image generation was not requested"}
+
+
+def meme_generation(prompt: str):
+    template_prompt = """
+        You are an AI assistant. Given a user prompt and given meme template, select the 
+        most appropriate meme captions. The number of meme captions required will be based
+        on the number of text boxes in the meme template {box_count}.
+
+        User Prompt: "{prompt}"
+        Meme Template: "{template}"
+        Box Coubts: "{box_count}"
+
+    """
+    templates = fetch_templates()
+    meme_template = meme_generation(prompt, templates)
+    
+    formatted_prompt = template_prompt.format(template=meme_template, prompt=prompt, box_count=meme_template.box_count)
+
+    #update the llm
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.8, api_key=api_key)
+
+    structure_llm = llm.with_structured_output(MemeCaptions)
+    caption_response = structure_llm.invoke(formatted_prompt)
+
+    template_id = meme_template.id
+    username='mmaazkhanhere'
+    password='HelloWorld00.'
+    box_count = meme_template.box_count
+
+
+    texts = []
+
+    for i in range(box_count):
+      texts.append(caption_response.captions[i])
+
+    url = 'https://api.imgflip.com/caption_image'
+
+    # Prepare the payload with the parameters
+    payload = {
+        'template_id': template_id,
+        'username': username,
+        'password': password
+    }
+
+    for i in range(box_count):
+        payload[f'text{i}'] = texts[i]
+
+    response = requests.post(url, data=payload)
+
+    if response.status_code == 200:
+        data = response.json()
+        if data['success']:
+            # Display the meme URL
+            return (f"Meme created successfully! You can view your meme at: {data['data']['url']}")
+        else:
+            return(f"Error: {data['error_message']}")
+    else:
+        return("Failed to contact Imgflip API.")
