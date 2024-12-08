@@ -31,7 +31,7 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
   // Auth Store
   const isGuest = useAuthStore((state) => state.isGuest);
   const guestUsed = useAuthStore((state) => state.guestUsed);
-  const setGuest = useAuthStore((state) => state.setGuest);
+  // const setGuest = useAuthStore((state) => state.setGuest);
   const useGuestOnce = useAuthStore((state) => state.useGuestOnce);
 
   // React Query Mutations
@@ -42,7 +42,7 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
     text: refinedData?.generated_text ?? generatedData?.generated_text ?? '',
     imageUrl: generatedData?.image_url ?? '',
     videoUrl: generatedData?.video_url ?? '',
-    memeUrl: generatedData?.meme_url ?? '',
+    memeUrl: generatedData?.meme?.meme_url ?? '',
   };
 
   // Check if generation is allowed
@@ -98,7 +98,7 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
       id="content-generator-section"
       className={`bg-gradient-to-b ${odd ? 'from-primary-100 to-white' : 'from-white to-primary-100'} text-center py-20`}
     >
-      {(generateStatus === 'loading' || refineStatus === 'loading') && <Loader text="Generating content..." />}
+      {(generateStatus === 'pending' || refineStatus === 'pending') && <Loader text="Generating content..." />}
 
       <div className="max-w-4xl mx-auto p-6 rounded-lg relative">
         <div className="flex justify-between items-center mb-6">
@@ -182,7 +182,15 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
         )}
 
         {/* Integrate ContentPreview Component */}
-        <ContentPreview generatedContent={generatedContent} onRefine={handleRefine} />
+        <ContentPreview 
+          generatedContent={generatedContent} 
+          onRefine={handleRefine} 
+          onPublishAll={() => {}} 
+          onSchedule={() => {}} 
+          onRegenerateAll={() => {}} 
+          onDownloadPack={() => {}} 
+          onShareAll={() => {}} 
+        />
       </div>
     </section>
   );

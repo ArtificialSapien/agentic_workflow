@@ -4,7 +4,7 @@ import Features from '@/components/Features'
 
 const FeaturesPage: React.FC = () => (
   <div>
-    <Features />
+    <Features odd={false} />
   </div>
 )
 

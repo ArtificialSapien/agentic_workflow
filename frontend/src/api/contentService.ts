@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { InitialRequest, InitialResponse, FineTuneRequest, FineTunedText } from '../types/api';
+import { InitialRequest, InitialResponse, FineTuneTextRequest, FineTunedText } from '../types/api';
 
 //TODO Set baseURL from env variable for flexibility
 const api = axios.create({
@@ -11,7 +11,7 @@ export async function generatePost(requestData: InitialRequest): Promise<Initial
   return response.data;
 }
 
-export async function finetunePost(requestData: FineTuneRequest): Promise<FineTunedText> {
+export async function finetunePost(requestData: FineTuneTextRequest): Promise<FineTunedText> {
   const response = await api.post<FineTunedText>('/fine_tune_text/finetune_post/', requestData);
   return response.data;
 }

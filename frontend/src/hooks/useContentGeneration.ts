@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import { generatePost, finetunePost } from '@/api/contentService';
-import { InitialRequest, FineTuneRequest, InitialResponse } from '@/types/api';
+import { InitialRequest, FineTuneTextRequest, InitialResponse } from '@/types/api';
 
 export function useGenerateContent(): UseMutationResult<InitialResponse, Error, InitialRequest> {
   const queryClient = useQueryClient();
@@ -13,10 +13,10 @@ export function useGenerateContent(): UseMutationResult<InitialResponse, Error, 
   });
 }
 
-export function useRefineContent(): UseMutationResult<{ generated_text: string }, Error, FineTuneRequest> {
+export function useRefineContent(): UseMutationResult<{ generated_text: string }, Error, FineTuneTextRequest> {
   const queryClient = useQueryClient();
 
-  return useMutation<{ generated_text: string }, Error, FineTuneRequest>({
+  return useMutation<{ generated_text: string }, Error, FineTuneTextRequest>({
     mutationFn: finetunePost, 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['generatedContent'] }); 

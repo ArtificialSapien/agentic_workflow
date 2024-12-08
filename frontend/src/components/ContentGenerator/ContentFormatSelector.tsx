@@ -68,7 +68,6 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
             <div className="flex flex-col items-center text-center">
               <FileText
                 className="w-8 h-8 mb-2 text-primary-700 group-hover:scale-110 transition-transform"
-                alt="Text Post Icon"
               />
               <span className="font-medium text-primary-700">Text</span>
               <span className="text-xs text-gray-500">Social media text</span>
@@ -92,7 +91,6 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
             <div className="flex flex-col items-center text-center">
               <Image
                 className="w-8 h-8 mb-2 text-primary-700 group-hover:scale-110 transition-transform"
-                alt="Image Icon"
               />
               <span className="font-medium text-primary-700">Image</span>
               <span className="text-xs text-gray-500">AI-generated visual</span>
@@ -116,7 +114,6 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
             <div className="flex flex-col items-center text-center">
               <Video
                 className="w-8 h-8 mb-2 text-primary-700 group-hover:scale-110 transition-transform"
-                alt="Video Icon"
               />
               <span className="font-medium text-primary-700">Video</span>
               <span className="text-xs text-gray-500">Short video clip</span>
@@ -140,7 +137,6 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
             <div className="flex flex-col items-center text-center">
               <Smile
                 className="w-8 h-8 mb-2 text-primary-700 group-hover:scale-110 transition-transform"
-                alt="Meme Icon"
               />
               <span className="font-medium text-primary-700">Meme</span>
               <span className="text-xs text-gray-500">Viral format</span>

@@ -1,5 +1,4 @@
 export type Mode = 'basic' | 'guided' | 'expert';
-
 export interface GenerationOptions {
   mode: Mode;
   prompt: string;
@@ -10,7 +9,6 @@ export interface GenerationOptions {
   generateVideo: boolean;
   generateMeme: boolean;
 }
-
 export interface GeneratedContent {
   text?: string;
   imageUrl?: string;
