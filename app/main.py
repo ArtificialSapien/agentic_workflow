@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.generate_post import router as post_router
 from app.api.finetune_text import router as finetunetext_router
@@ -15,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
+
+app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
 
 app.include_router(post_router, tags=["post_prompt"], prefix="/post_prompt")
 app.include_router(
