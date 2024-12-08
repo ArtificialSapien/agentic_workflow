@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from app.schemas.response import Meme
 
 
 class InitialRequest(BaseModel):
@@ -15,10 +16,17 @@ class InitialRequest(BaseModel):
     generate_meme: bool = Field(default=False, description="Flag whether generate meme")
 
 
-class FineTuneRequest(BaseModel):
+class FineTuneTextRequest(BaseModel):
     # user_id: str = Field(description="The user ID")  # Potential field to add
     # session_id: str = Field(description="The session ID") # Potential field to add
     prompt: str = Field(description="The prompt")
     generated_text: str = Field(
         description="The generated text component of the social media post"
     )
+
+
+class FineTuneMemeRequest(BaseModel):
+    # user_id: str = Field(description="The user ID")  # Potential field to add
+    # session_id: str = Field(description="The session ID") # Potential field to add
+    prompt: str = Field(description="The prompt")
+    meme: Meme = Field(description="The meme component of the social media post")

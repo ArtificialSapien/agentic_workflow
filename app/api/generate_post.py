@@ -3,13 +3,12 @@ import json
 from typing import List
 
 from fastapi import APIRouter
-from langgraph.graph import StateGraph, START, END
-from langchain_openai import AzureChatOpenAI
 
-from app.models.base import AzureDallE3ImageGenerator
+
 from app.schemas import response
 from app.schemas import request
 from app.agents.post_creator import create_post_creator_agent, create_post
+from app.schemas.response import Meme
 
 from dotenv import load_dotenv
 
@@ -39,14 +38,13 @@ def generate_post(
         "generate_video": initial_request.generate_video,
         "generate_meme": initial_request.generate_meme,
     }
-    generated_text, image_url, video_url, meme_url = create_post(
+    generated_text, image_url, video_url, meme_template, meme_url = create_post(
         agent=agent, initial_input=initial_input
     )
-
 
     return response.InitialResponse(
         generated_text=generated_text,
         image_url=image_url,
         video_url=video_url,
-        meme_url=meme_url,
+        meme=Meme(meme_template=meme_template, meme_url=meme_url),
     )

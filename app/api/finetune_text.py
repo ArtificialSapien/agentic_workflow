@@ -1,17 +1,18 @@
 from fastapi import APIRouter
-from langgraph.graph import StateGraph, START, END
-from langchain_openai import AzureChatOpenAI
 
+from app.models.model_provider import ModelWrapper
 from app.schemas import response
 from app.schemas import request
 
 router = APIRouter()
 
-llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
+# Initialize the LLM
+model_wrapper = ModelWrapper.initialize_from_env()
+llm = model_wrapper.model
 
 
 @router.post("/finetune_post/", response_model=response.FineTunedText)
-def finetune_text(request: request.FineTuneRequest):
+def finetune_text(request: request.FineTuneTextRequest):
 
     prompt = f"""
     You are an advanced language model. Your task is to update the previous LLM response to better address the new prompt. Follow these steps:

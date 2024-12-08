@@ -45,5 +45,6 @@ def create_post(agent, initial_input):
         final_state["generated_text"],
         final_state["generated_image_url"],
         "whatever2",
+        final_state["selected_meme_template"],
         final_state["generated_meme_url"],
     )
