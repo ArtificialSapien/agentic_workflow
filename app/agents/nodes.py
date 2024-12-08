@@ -50,6 +50,8 @@ class AgentState(TypedDict):
     """
 
     user_prompt: str
+    content_style: str
+    content_format: str
     generate_text: bool
     generate_image: bool
     generate_video: bool
@@ -115,15 +117,28 @@ def text_generator(state: AgentState):
     """LangGraph node that will schedule tasks based on dependencies and team availability"""
     news_articles = state["news_articles"]
     user_prompt = state["user_prompt"]
+    content_style = state["content_style"]
+    content_format = state["content_format"]
     prompt = f"""
-        You are a social media post creator.
+        You are a social media post creator. Use the provided news articles along
+        with the initial user prompt used to collect the news articles to generate
+        engaging social media text. Ensure the output reflects the specified format and style/tone.
+        # Steps
+            1. Review the provided news articles and the initial user prompt.
+            2. Extract key points and themes from the articles.
+            3. Craft a social media post that aligns with the desired style and tone.
+            4. Format the output in Markdown, using appropriate headers, bullet points, and/ or links as needed.
+        # Output Format'
+            1. The output should be a single social media post formatted in Markdown.
+            2. It should be written in the style and tone requested.
+            3. It should have the length matching the requested style.
+            4. Add references to the text extracted from the news articles field - 'source' in the text as an Markdown upper index at the end the corresponding sentence.
+            5. Add all included references to the end of the post as a list of links using the matching indexing - appearance order in the text.
         **Given:**
-            - **News articles:** {news_articles}
-            - **User prompt:** {user_prompt}
-        **Your objectives are to: **
-            1. **Create:**
-                - Create a social media post combining the information from each news article.
-                - Add a title using the user prompt {user_prompt}.
+            1. News Articles: {news_articles}
+            2. User Prompt: {user_prompt}
+            3. Expected article format: {content_format}
+            4. Expected article style: {content_style}
         """
     if state["generate_text"] == True:
         try:
