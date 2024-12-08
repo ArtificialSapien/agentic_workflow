@@ -74,6 +74,11 @@ def load_json_files_from_folder(folder_path: str) -> List[NewsArticle]:
 
 def web_crawler(state: AgentState):
     """"""
+    user_prompt = state["user_prompt"]
+
+    # node 1 prompt -> query (using llm)
+    # node 2 query -> top 5 results
+
     # TODOD creates news articles
     news_articles = load_json_files_from_folder("./data/work/wired/output")
     # news_articles = [NewsArticle(title="cooking class", date="today", content="this is a cooking class story", author="myself", source="whatever.com")]
@@ -145,7 +150,43 @@ def image_generator(state: AgentState):
         return {"generated_image_url": "Image generation was not requested"}
 
 
+def video_generator(state: AgentState):
+    if state["generate_video"] == False:
+        return {"generated_video_url": None}
+
+    user_prompt = state["user_prompt"]
+    initial_image_url = state["generated_image_url"]
+    prompt = f"""
+        You are a video creator.
+        Given an initial image, your objective is to create a video using Stability AI.
+
+        **Given:**
+            - **Initial Image:** {initial_image_url}
+
+        **Your objectives are to:**
+            1. **Create:**
+                - Create a video using Stability AI based on the initial image.
+                - Enhance the visual quality and stability of the video.
+                - Add relevant effects and transitions.
+    """
+    import requests
+
+    response = requests.post(
+        f"https://api.stability.ai/v2beta/image-to-video",
+        headers={"authorization": f"Bearer {os.getenv("STABILITY_AI_API_KEY")}"},
+        files={"image": open("../data/test_resized_image3.jpg", "rb")},
+        data={"seed": 0, "cfg_scale": 1.8, "motion_bucket_id": 127},
+    )
+
+    print("Generation ID:", response.json().get("id"))
+
+    return {"prompt": prompt}
+
+
 def meme_selector(state: AgentState):
+    if state["generate_meme"] == False:
+        return {"selected_meme_template": None}
+
     user_prompt = state["user_prompt"]
     templates = fetch_templates()
     prompt = f"""
@@ -166,6 +207,9 @@ def meme_selector(state: AgentState):
 
 
 def meme_generator(state: AgentState):
+    if state["generate_meme"] == False:
+        return {"generated_meme_url": None}
+
     user_prompt = state["user_prompt"]
     meme_template = state["selected_meme_template"]
     box_count = meme_template.box_count
