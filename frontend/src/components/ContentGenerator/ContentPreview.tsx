@@ -10,6 +10,7 @@ import {
   Download,
 } from 'lucide-react';
 import { GeneratedContent } from '@/types/content'; // Adjust the path based on your project structure
+import MarkdownRenderer from '@/components/ui/MarkdownRenderer';
 
 interface ContentPreviewProps {
   generatedContent: GeneratedContent | null;
@@ -189,7 +190,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
               </div>
             </div>
             <div className="bg-gray-50 p-3 rounded-lg text-sm whitespace-pre-wrap">
-              {contentToDisplay.text}
+              <MarkdownRenderer text={contentToDisplay.text as string} />
             </div>
           </div>
         )}
