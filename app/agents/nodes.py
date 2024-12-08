@@ -4,18 +4,18 @@ from typing import List
 from typing import TypedDict, Union
 import requests
 
-from langchain_openai import AzureChatOpenAI
-from langchain_groq import ChatGroq
+# from langchain_openai import AzureChatOpenAI
+# from langchain_groq import ChatGroq
 
 from app.models.base import AzureDallE3ImageGenerator
 from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles
 
-from helper_functions.fetch_templates import fetch_templates
-from helper_functions.meme_selection import meme_selection
+from app.helper_functions.fetch_templates import fetch_templates
+from app.helper_functions.meme_selection import meme_selection
 
-from schemas.meme_caption_schema import MemeCaptions
+from app.schemas.meme_caption_schema import MemeCaptions
 
 from dotenv import load_dotenv
 

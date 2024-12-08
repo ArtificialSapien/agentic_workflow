@@ -1,7 +1,7 @@
 import os
 from langchain_groq import ChatGroq
 
-from schemas.meme_selector_schema import MemeSelector
+from app.schemas.meme_selector_schema import MemeSelector
 
 def meme_selection(prompt: str, templates):
     template_prompt = """
