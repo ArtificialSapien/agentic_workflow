@@ -10,21 +10,21 @@ from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles
 
-
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv(override=True)
 
-llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
+# llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
 lim = AzureDallE3ImageGenerator(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
 )
 
 # Initialize the LLM
-# model_wrapper = ModelWrapper.initialize_from_env()
-# llm = model_wrapper.model
+model_wrapper = ModelWrapper.initialize_from_env()
+llm = model_wrapper.model
+
 
 class AgentState(TypedDict):
     """
@@ -53,6 +53,7 @@ class AgentState(TypedDict):
     generated_image_url: Union[str, None]
     generated_video_url: Union[str, None]
     generated_meme_url: Union[str, None]
+
 
 def load_json_files_from_folder(folder_path: str) -> List[NewsArticle]:
     articles = []

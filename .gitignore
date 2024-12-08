@@ -163,5 +163,4 @@ cython_debug/
 
 notebooks/
 images/
-data/
 .DS_Store
