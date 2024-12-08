@@ -7,6 +7,7 @@ from langchain_openai import AzureChatOpenAI
 from app.models.base import AzureDallE3ImageGenerator
 from app.agents.data_models import NewsArticle
 from app.agents.agent_state import AgentState
+from app.models.model_provider import ModelWrapper
 
 from dotenv import load_dotenv
 
@@ -18,6 +19,10 @@ lim = AzureDallE3ImageGenerator(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
 )
+
+# Initialize the LLM
+# model_wrapper = ModelWrapper.initialize_from_env()
+# llm = model_wrapper.model
 
 
 def load_json_files_from_folder(folder_path: str) -> List[NewsArticle]:
@@ -56,7 +61,10 @@ def text_generator(state: AgentState):
                 - Create a social media post combining the information from each news article.
                 - Add a title using the user prompt {user_prompt}.
         """
-    generated_text: str = llm.invoke(prompt).content
+    try:
+        generated_text: str = llm.invoke(prompt).content
+    except Exception as e:
+        generated_text = "LLM model invokation failed - please holder text"
     return {"generated_text": generated_text}
 
 
@@ -77,18 +85,24 @@ def image_generator(state: AgentState):
                 - Ensure that the style, content are aligned with the provided context.
         """
     if state["generate_image"] == True:
-        prompt_for_image_generation: str = llm.invoke(
-            prompt_for_instructing_image_generation
-        ).content
-        print(prompt_for_image_generation)
 
-        # Call the image generator API
-        lim.generate_image(prompt_for_image_generation)
-        if lim.image_generated:
-            print("image_was_generated")
-            return {"generated_image_url": lim.image_url}
-        else:
-            return {"generated_image_url": "No image generated due to internal error"}
+        try:
+            prompt_for_image_generation: str = llm.invoke(
+                prompt_for_instructing_image_generation
+            ).content
+            print(prompt_for_image_generation)
+
+            # Call the image generator API
+            lim.generate_image(prompt_for_image_generation)
+            if lim.image_generated:
+                print("image_was_generated")
+                return {"generated_image_url": lim.image_url}
+            else:
+                return {
+                    "generated_image_url": "No image generated due to internal error"
+                }
+        except Exception as e:
+            return {"generated_image_url": "Certain error occured"}
 
     else:
         return {"generated_image_url": "Image generation was not requested"}
