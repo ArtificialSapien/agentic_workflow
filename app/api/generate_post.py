@@ -30,6 +30,7 @@ def generate_post(
     # generate_video: bool,
     # generate_meme: bool
 ):
+
     agent = create_post_creator_agent()
     initial_input = {
         "user_prompt": initial_request.prompt,
@@ -41,6 +42,7 @@ def generate_post(
     generated_text, image_url, video_url, meme_url = create_post(
         agent=agent, initial_input=initial_input
     )
+
 
     return response.InitialResponse(
         generated_text=generated_text,
