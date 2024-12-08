@@ -9,7 +9,8 @@ from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles, MemeTemplate, MemeCaptions
 
-from app.helper_functions.fetch_templates import fetch_templates
+from app.helper_functions import fetch_templates
+from app.helper_functions import ensure_markdown_format
 
 
 from dotenv import load_dotenv
@@ -143,10 +144,11 @@ def text_generator(state: AgentState):
         """
     if state["generate_text"] == True:
         try:
-            generated_text: str = llm.invoke(prompt).content
+            generated_text: str = llm.invoke(prompt).content.strip()
         except Exception as e:
             generated_text = "LLM model invokation failed - please holder text"
-        return {"generated_text": generated_text}
+
+        return {"generated_text": ensure_markdown_format(generated_text)}
     return {"generated_text": "Text generation was not requested"}
 
 
