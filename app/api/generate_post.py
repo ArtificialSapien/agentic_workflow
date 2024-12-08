@@ -33,6 +33,8 @@ def generate_post(
     agent = create_post_creator_agent()
     initial_input = {
         "user_prompt": initial_request.prompt,
+        "content_format": initial_request.format,
+        "content_style": initial_request.style,
         "generate_text": initial_request.generate_text,
         "generate_image": initial_request.generate_image,
         "generate_video": initial_request.generate_video,

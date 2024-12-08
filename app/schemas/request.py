@@ -6,6 +6,12 @@ class InitialRequest(BaseModel):
     # user_id: str = Field(description="The user ID")  # Potential field to add
     # session_id: str = Field(description="The session ID") # Potential field to add
     prompt: str = Field(description="The prompt")
+    format: str = Field(
+        default="linkedin", description="The format of the generated content"
+    )
+    style: str = Field(
+        default="professional", description="The style of the generated content"
+    )
     generate_text: bool = Field(default=True, description="Flag whether generate text")
     generate_image: bool = Field(
         default=False, description="Flag whether generate image"
