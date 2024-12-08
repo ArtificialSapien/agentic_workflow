@@ -166,3 +166,4 @@ images/
 .DS_Store
 google_fetch.json
 work/
+node_modules
