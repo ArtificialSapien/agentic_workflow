@@ -173,7 +173,7 @@ def video_generator(state: AgentState):
 
     response = requests.post(
         f"https://api.stability.ai/v2beta/image-to-video",
-        headers={"authorization": f"Bearer {os.getenv("STABILITY_AI_API_KEY")}"},
+        headers={"authorization": f"""Bearer {os.getenv("STABILITY_AI_API_KEY")}"""},
         files={"image": open("../data/test_resized_image3.jpg", "rb")},
         data={"seed": 0, "cfg_scale": 1.8, "motion_bucket_id": 127},
     )
