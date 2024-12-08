@@ -139,3 +139,7 @@ wheel==0.44.0
 yarl==1.18.3
 langchain-groq
 langchain-google-genai
+google-search-results
+bs4
+httpx
+strenum
