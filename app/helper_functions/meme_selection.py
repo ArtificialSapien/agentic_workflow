@@ -1,5 +1,5 @@
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
 from schemas.meme_selector_schema import MemeSelector
 
@@ -15,12 +15,12 @@ def meme_selection(prompt: str, templates):
     """
     formatted_prompt = template_prompt.format(templates=templates, prompt=prompt)
 
-        #enter api key
-    api_key = os.getenv('GOOGLE_API_KEY')
+    #enter api key
+    api_key = os.getenv('GROQ_API_KEY')
 
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        temperature=0.5,
+    llm = ChatGroq(
+        model=os.getenv('MODEL_NAME'),
+        temperature=os.getenv('TEMPERATURE'),
         api_key=api_key
     )
 

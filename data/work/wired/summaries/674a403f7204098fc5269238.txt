@@ -1,0 +1,1 @@
+ChatGPT Canvas is a new way to collaborate with ChatGPT's AI. Canvas works like an AI-powered Google Docs. You can write text or code, and edit the output of the chatbot. It's available for Enterprise, Pro, or Plus users for $20 a month.

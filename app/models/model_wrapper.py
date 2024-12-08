@@ -74,10 +74,14 @@ class ModelWrapper:
             "AZURE_API_VERSION",
         ]
         openai_keys = ["OPENAI_API_KEY", "OPENAI_API_BASE"]
+        gemini_keys = ["GEMINI_API_KEY"]
+        groq_keys = ["GROQ_API_KEY"]
 
         provider_keys = {
             "azure": azure_keys,
             "openai": openai_keys,
+            "gemini": gemini_keys,
+            "groq": groq_keys
         }
 
         config = {}

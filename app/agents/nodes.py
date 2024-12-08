@@ -5,6 +5,7 @@ from typing import TypedDict, Union
 import requests
 
 from langchain_openai import AzureChatOpenAI
+from langchain_groq import ChatGroq
 
 from app.models.base import AzureDallE3ImageGenerator
 from app.agents.data_models import NewsArticle
@@ -21,15 +22,16 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv(override=True)
 
-llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
+# llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
 lim = AzureDallE3ImageGenerator(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
 )
 
 # Initialize the LLM
-# model_wrapper = ModelWrapper.initialize_from_env()
-# llm = model_wrapper.model
+model_wrapper = ModelWrapper.initialize_from_env()
+llm = model_wrapper.model
+
 
 class AgentState(TypedDict):
     """
@@ -58,6 +60,7 @@ class AgentState(TypedDict):
     generated_image_url: Union[str, None]
     generated_video_url: Union[str, None]
     generated_meme_url: Union[str, None]
+
 
 def load_json_files_from_folder(folder_path: str) -> List[NewsArticle]:
     articles = []
@@ -142,7 +145,7 @@ def image_generator(state: AgentState):
         return {"generated_image_url": "Image generation was not requested"}
 
 
-def meme_generation(prompt: str):
+def meme_generator(state: AgentState):
     template_prompt = """
         You are an AI assistant. Given a user prompt and given meme template, select the 
         most appropriate meme captions. The number of meme captions required will be based
@@ -154,12 +157,9 @@ def meme_generation(prompt: str):
 
     """
     templates = fetch_templates()
-    meme_template = meme_generation(prompt, templates)
+    meme_template = meme_selection(state['user_prompt'], templates)
     
-    formatted_prompt = template_prompt.format(template=meme_template, prompt=prompt, box_count=meme_template.box_count)
-
-    #update the llm
-    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.8, api_key=api_key)
+    formatted_prompt = template_prompt.format(template=meme_template, prompt=state['user_prompt'], box_count=meme_template.box_count)
 
     structure_llm = llm.with_structured_output(MemeCaptions)
     caption_response = structure_llm.invoke(formatted_prompt)

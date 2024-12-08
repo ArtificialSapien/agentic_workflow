@@ -1,0 +1,1 @@
+Researchers were able to persuade a simulated self-driving car to ignore stop signs and even drive off a bridge. They also got a wheeled robot to find the best place to detonate a bomb, and force a four-legged robot to spy on people and enter restricted areas. LLM-powered robots can easily be hacked so that they behave in potentially dangerous ways.
