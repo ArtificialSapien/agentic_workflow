@@ -17,8 +17,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
-
 app.include_router(post_router, tags=["post_prompt"], prefix="/post_prompt")
 app.include_router(
     finetunetext_router, tags=["fine_tune_text"], prefix="/fine_tune_text"
@@ -26,3 +24,5 @@ app.include_router(
 app.include_router(
     finetunememe_router, tags=["fine_tune_meme"], prefix="/fine_tune_meme"
 )
+
+app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
