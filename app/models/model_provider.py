@@ -1,5 +1,5 @@
 # model_providers.py
-from model_wrapper import ModelWrapper
+from app.models.model_wrapper import ModelWrapper
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 
 # Register providers

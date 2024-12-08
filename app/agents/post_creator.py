@@ -1,38 +1,7 @@
-from typing import TypedDict, Union
 
 from langgraph.graph import StateGraph, START, END
 
-from app.agents.nodes import web_crawler, text_generator, image_generator
-from app.agents.data_models import NewsArticles
-
-
-class AgentState(TypedDict):
-    """
-    Represents the state of an agent.
-
-    Attributes:
-        user_prompt (str): The prompt provided by the user.
-        generate_text (bool): Indicates whether text generation is enabled.
-        generate_image (bool): Indicates whether image generation is enabled.
-        generate_video (bool): Indicates whether video generation is enabled.
-        generate_meme (bool): Indicates whether meme generation is enabled.
-        news_articles (Union[NewsArticles, None]): The news articles used for generation.
-        generated_text (Union[str, None]): The generated text.
-        generated_image_url (Union[str, None]): The URL of the generated image.
-        generated_video_url (Union[str, None]): The URL of the generated video.
-        generated_meme_url (Union[str, None]): The URL of the generated meme.
-    """
-
-    user_prompt: str
-    generate_text: bool
-    generate_image: bool
-    generate_video: bool
-    generate_meme: bool
-    news_articles: Union[NewsArticles, None]
-    generated_text: Union[str, None]
-    generated_image_url: Union[str, None]
-    generated_video_url: Union[str, None]
-    generated_meme_url: Union[str, None]
+from app.agents.nodes import web_crawler, text_generator, image_generator, AgentState
 
 
 def create_post_creator_agent():

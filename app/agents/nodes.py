@@ -1,13 +1,15 @@
 import os
 import json
 from typing import List
+from typing import TypedDict, Union
 
 from langchain_openai import AzureChatOpenAI
 
 from app.models.base import AzureDallE3ImageGenerator
 from app.agents.data_models import NewsArticle
-from app.agents.agent_state import AgentState
 from app.models.model_provider import ModelWrapper
+from app.agents.data_models import NewsArticles
+
 
 from dotenv import load_dotenv
 
@@ -24,6 +26,33 @@ lim = AzureDallE3ImageGenerator(
 # model_wrapper = ModelWrapper.initialize_from_env()
 # llm = model_wrapper.model
 
+class AgentState(TypedDict):
+    """
+    Represents the state of an agent.
+
+    Attributes:
+        user_prompt (str): The prompt provided by the user.
+        generate_text (bool): Indicates whether text generation is enabled.
+        generate_image (bool): Indicates whether image generation is enabled.
+        generate_video (bool): Indicates whether video generation is enabled.
+        generate_meme (bool): Indicates whether meme generation is enabled.
+        news_articles (Union[NewsArticles, None]): The news articles used for generation.
+        generated_text (Union[str, None]): The generated text.
+        generated_image_url (Union[str, None]): The URL of the generated image.
+        generated_video_url (Union[str, None]): The URL of the generated video.
+        generated_meme_url (Union[str, None]): The URL of the generated meme.
+    """
+
+    user_prompt: str
+    generate_text: bool
+    generate_image: bool
+    generate_video: bool
+    generate_meme: bool
+    news_articles: Union[NewsArticles, None]
+    generated_text: Union[str, None]
+    generated_image_url: Union[str, None]
+    generated_video_url: Union[str, None]
+    generated_meme_url: Union[str, None]
 
 def load_json_files_from_folder(folder_path: str) -> List[NewsArticle]:
     articles = []
