@@ -5,17 +5,14 @@ from typing import TypedDict, Union
 import requests
 
 from langchain_openai import AzureChatOpenAI
-from langchain_groq import ChatGroq
 
 from app.models.base import AzureDallE3ImageGenerator
 from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
-from app.agents.data_models import NewsArticles
+from app.agents.data_models import NewsArticles, MemeTemplate, MemeCaptions
 
-from helper_functions.fetch_templates import fetch_templates
-from helper_functions.meme_selection import meme_selection
+from app.helper_functions.fetch_templates import fetch_templates
 
-from schemas.meme_caption_schema import MemeCaptions
 
 from dotenv import load_dotenv
 
@@ -59,6 +56,7 @@ class AgentState(TypedDict):
     generated_text: Union[str, None]
     generated_image_url: Union[str, None]
     generated_video_url: Union[str, None]
+    selected_meme_template: Union[MemeTemplate, None]
     generated_meme_url: Union[str, None]
 
 
@@ -98,11 +96,13 @@ def text_generator(state: AgentState):
                 - Create a social media post combining the information from each news article.
                 - Add a title using the user prompt {user_prompt}.
         """
-    try:
-        generated_text: str = llm.invoke(prompt).content
-    except Exception as e:
-        generated_text = "LLM model invokation failed - please holder text"
-    return {"generated_text": generated_text}
+    if state["generate_text"] == True:
+        try:
+            generated_text: str = llm.invoke(prompt).content
+        except Exception as e:
+            generated_text = "LLM model invokation failed - please holder text"
+        return {"generated_text": generated_text}
+    return {"generated_text": "Text generation was not requested"}
 
 
 def image_generator(state: AgentState):
@@ -145,56 +145,69 @@ def image_generator(state: AgentState):
         return {"generated_image_url": "Image generation was not requested"}
 
 
+def meme_selector(state: AgentState):
+    user_prompt = state["user_prompt"]
+    templates = fetch_templates()
+    prompt = f"""
+        You are an AI assistant.
+        Given a user prompt, select the most appropriate meme template from the list below and provide only the template's ID and name.
+        Do not return the entire list. The ID should be the number directly associated with the template.
+
+        List of Templates:
+        {templates}
+
+        User Prompt: "{user_prompt}"
+
+        Return structured output based on {MemeTemplate}.
+    """
+    structure_llm = llm.with_structured_output(MemeTemplate)
+    selected_meme_template: MemeTemplate = structure_llm.invoke(prompt)
+    return {"selected_meme_template": selected_meme_template}
+
+
 def meme_generator(state: AgentState):
-    template_prompt = """
-        You are an AI assistant. Given a user prompt and given meme template, select the 
+    user_prompt = state["user_prompt"]
+    meme_template = state["selected_meme_template"]
+    box_count = meme_template.box_count
+    prompt = f"""
+        You are an AI assistant. Given a user prompt and given meme template, select the
         most appropriate meme captions. The number of meme captions required will be based
         on the number of text boxes in the meme template {box_count}.
 
-        User Prompt: "{prompt}"
-        Meme Template: "{template}"
-        Box Coubts: "{box_count}"
+        User Prompt: "{user_prompt}"
+        Meme Template: "{meme_template}"
+        Box Counts: "{box_count}"
 
     """
-    templates = fetch_templates()
-    meme_template = meme_selection(state['user_prompt'], templates)
-    
-    formatted_prompt = template_prompt.format(template=meme_template, prompt=state['user_prompt'], box_count=meme_template.box_count)
-
     structure_llm = llm.with_structured_output(MemeCaptions)
-    caption_response = structure_llm.invoke(formatted_prompt)
+    caption_response = structure_llm.invoke(prompt)
 
     template_id = meme_template.id
-    username='mmaazkhanhere'
-    password='HelloWorld00.'
+    username = "mmaazkhanhere"
+    password = "HelloWorld00."
     box_count = meme_template.box_count
-
 
     texts = []
 
     for i in range(box_count):
-      texts.append(caption_response.captions[i])
+        texts.append(caption_response.captions[i])
 
-    url = 'https://api.imgflip.com/caption_image'
+    url = "https://api.imgflip.com/caption_image"
 
     # Prepare the payload with the parameters
-    payload = {
-        'template_id': template_id,
-        'username': username,
-        'password': password
-    }
+    payload = {"template_id": template_id, "username": username, "password": password}
 
     for i in range(box_count):
-        payload[f'text{i}'] = texts[i]
+        payload[f"text{i}"] = texts[i]
 
     response = requests.post(url, data=payload)
 
     if response.status_code == 200:
         data = response.json()
-        if data['success']:
+        if data["success"]:
             # Display the meme URL
-            return (f"Meme created successfully! You can view your meme at: {data['data']['url']}")
+            return {"generated_meme_url": data["data"]["url"]}
         else:
-            return(f"Error: {data['error_message']}")
+            return {"generated_meme_url": "failed to generate meme"}
     else:
-        return("Failed to contact Imgflip API.")
+        return {"generated_meme_url": "Failed to contact Imgflip API."}
