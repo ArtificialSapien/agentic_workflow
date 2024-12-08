@@ -48,3 +48,77 @@ html {
   background: linear-gradient(to right, rgba(20, 184, 166, 0.8), rgba(20, 184, 166, 0));
   animation: shooting-shadow 1s forwards;
 }
+
+.markdown-content h1 {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+.markdown-content h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.markdown-content h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.markdown-content .language-html span {
+  padding: 0;
+  box-shadow: unset;
+  display: inline;
+}
+
+.markdown-content a {
+  color: #3b82f6; /* Using techblue 500 for links */
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  color: #1e1b4b; /* Using primary 950 for hover state */
+}
+
+
+.markdown-content .footnotes {
+  border-top: 1px solid #eaeaea;
+  padding-top: 1em;
+  font-size: 0.9em;
+  color: #5eead4;
+}
+
+.markdown-content .footnotes li {
+  margin-bottom: 0.5em;
+}
+
+.markdown-content .footnote-backref {
+  text-decoration: none;
+  margin-left: 0.5em;
+  color: #4338ca; /* Using primary-700 */
+}
+
+.markdown-content .footnote-backref:hover {
+  color: #4f46e5; /* Using primary-600 */
+}
+
+.markdown-content .footnotes {
+  border-top: 1px solid #eaeaea;
+  padding-top: 1em;
+  font-size: 0.9em;
+  color: #5eead4;
+}
+
+.markdown-content .footnotes li {
+  margin-bottom: 0.5em;
+  line-height: 1.6;
+}
+
+.markdown-content .footnote-ref a {
+  color: #1d4ed8; /* Farbe der Fußnotenreferenz */
+  text-decoration: none;
+  position: relative;
+}
+
+.markdown-content .footnote-ref a:hover {
+  text-decoration: underline;
+}
