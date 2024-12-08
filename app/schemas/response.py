@@ -1,10 +1,11 @@
+from typing import Union
 from pydantic import BaseModel
 from app.agents.data_models import MemeTemplate
 
 
 class Meme(BaseModel):
-    meme_template: MemeTemplate
-    meme_url: str
+    meme_template: Union[MemeTemplate, None]
+    meme_url: Union[str, None]
 
 
 class InitialResponse(BaseModel):
