@@ -88,7 +88,7 @@ def web_crawler(state: AgentState):
 
     summarizer: Summarizer = SummarizerUsingGroq()
 
-    topic = query_encoder.get_topic("Provide a summary of the latest AI news.")
+    topic = query_encoder.get_topic(state["user_prompt"])
 
     news_source.fetch({
         "q": topic,
