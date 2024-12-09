@@ -29,6 +29,14 @@ export interface FineTuneTextRequest {
   // session_id?: string;
 }
 
+
+export interface ContentAnalysisRequest {
+  text: string;
+  // Uncomment if you decide to include these fields
+  // user_id?: string;
+  // session_id?: string;
+}
+
 // Fine-Tune Meme Request Interface
 export interface FineTuneMemeRequest {
   prompt: string;
@@ -41,6 +49,13 @@ export interface FineTuneMemeRequest {
 // Fine-Tuned Text Response Interface
 export interface FineTunedText {
   generated_text: string;
+}
+
+export interface ContentAnalysisResponse {
+  seo_score: number;
+  readability_score: number;
+  sentiment_score: number;
+  keywords: string[];
 }
 
 // Fine-Tuned Image Response Interface

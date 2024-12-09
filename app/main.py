@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.generate_post import router as post_router
 from app.api.finetune_text import router as finetunetext_router
 from app.api.finetune_meme import router as finetunememe_router
+from app.api.content_analyser import router as content_analyser_router
 
 app = FastAPI()
 
@@ -23,6 +24,10 @@ app.include_router(
 )
 app.include_router(
     finetunememe_router, tags=["fine_tune_meme"], prefix="/fine_tune_meme"
+)
+
+app.include_router(
+    content_analyser_router, tags=["content_analyser"], prefix="/content_analyser"
 )
 
 app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
