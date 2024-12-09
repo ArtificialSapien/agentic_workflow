@@ -36,13 +36,12 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
     <div className="max-w-4xl mx-auto bg-white rounded-4xl shadow-accent-dark p-6">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-semibold text-primary-700">Content Selection</h3>
- <button
+        <button
           onClick={handleSelectAllToggle}
-          className={`px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
-            allSelected
+          className={`px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${allSelected
               ? "bg-accent-500 text-white hover:bg-accent-600"
               : "bg-primary-500 text-white hover:bg-primary-600"
-          }`}
+            }`}
         >
           {allSelected ? "Deselect All" : "Select All"}
         </button>
@@ -98,29 +97,6 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
           </label>
         </div>
 
-        {/* Video */}
-        <div className="relative group">
-          <input
-            type="checkbox"
-            id="video-format"
-            className="peer hidden"
-            checked={generateVideo}
-            onChange={() => setGenerateVideo(!generateVideo)}
-          />
-          <label
-            htmlFor="video-format"
-            className="block p-4 border-2 rounded-xl cursor-pointer peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors hover:shadow-md hover:bg-primary-100"
-          >
-            <div className="flex flex-col items-center text-center">
-              <Video
-                className="w-8 h-8 mb-2 text-primary-700 group-hover:scale-110 transition-transform"
-              />
-              <span className="font-medium text-primary-700">Video</span>
-              <span className="text-xs text-gray-500">Short video clip</span>
-            </div>
-          </label>
-        </div>
-
         {/* Meme */}
         <div className="relative group">
           <input
@@ -140,6 +116,30 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
               />
               <span className="font-medium text-primary-700">Meme</span>
               <span className="text-xs text-gray-500">Viral format</span>
+            </div>
+          </label>
+        </div>
+
+        {/* Video */}
+        <div className="relative group">
+          <input
+            type="checkbox"
+            id="video-format"
+            className="peer hidden"
+            checked={generateVideo}
+            onChange={() => setGenerateVideo(!generateVideo)}
+            disabled
+          />
+          <label
+            htmlFor="video-format"
+            className="block p-4 border-2 rounded-xl cursor-not-allowed peer-checked:border-gray-400 peer-checked:bg-gray-100 transition-colors"
+          >
+            <div className="flex flex-col items-center text-center">
+              <Video
+                className="w-8 h-8 mb-2 text-gray-400 group-hover:scale-110 transition-transform"
+              />
+              <span className="font-medium text-gray-400">Video</span>
+              <span className="text-xs text-gray-400">Short video clip</span>
             </div>
           </label>
         </div>
