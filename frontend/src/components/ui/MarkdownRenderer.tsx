@@ -136,7 +136,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = React.memo(({ text }) 
   }), []);
 
   return (
-    <div className="markdown-renderer p-4 bg-white rounded-lg shadow-md max-w-full">
+    <div className="markdown-renderer p-4 bg-white rounded-lg max-w-full">
       <ReactMarkdown
         className="markdown-content"
         remarkPlugins={[remarkGfm, remarkMath]}

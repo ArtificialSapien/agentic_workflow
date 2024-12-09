@@ -46,8 +46,8 @@ const tabs = [
   { label: 'All Formats', key: 'all' },
   { label: 'Text Post', key: 'text' },
   { label: 'Image', key: 'image' },
-  { label: 'Video', key: 'video' },
   { label: 'Meme', key: 'meme' },
+  // { label: 'Video', key: 'video' },
 ];
 
 const ContentPreview: React.FC<ContentPreviewProps> = ({
@@ -60,7 +60,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
   onShareAll,
 }) => {
   const [refinePrompt, setRefinePrompt] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'text' | 'image' | 'video' | 'meme'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'text' | 'image'  | 'meme'>('all'); //| 'video'
 
   // Merge generated content with dummy content
   const contentToDisplay = mergeWithDummy(generatedContent);
@@ -133,7 +133,8 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
           {tabs.map((tab) => (
             <button
               key={tab.key}
-              onClick={() => setActiveTab(tab.key as 'all' | 'text' | 'image' | 'video' | 'meme')}
+              onClick={() => setActiveTab(tab.key as 'all' | 'text' | 'image'  | 'meme')}
+              // | 'video'
               className={`px-4 py-2 text-sm font-medium flex items-center space-x-2 ${
                 activeTab === tab.key
                   ? 'text-blue-600 border-b-2 border-blue-600'
@@ -154,11 +155,11 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Text Post Preview */}
         {shouldDisplay('text') && (
-          <div className="border rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="border rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow md:col-span-2">
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center space-x-2">
                 <FileText className="w-5 h-5 text-primary-700" />
-                <span className="font-medium text-primary-700">Text Post</span>
+                <span className="font-medium text-primary-700"> Text Post</span>
               </div>
               <div className="flex space-x-2">
                 {/* Edit Button */}
@@ -189,7 +190,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                 </button>
               </div>
             </div>
-            <div className="bg-gray-50 p-3 rounded-lg text-sm whitespace-pre-wrap">
+            <div className="rounded-lg text-sm whitespace-pre-wrap">
               <MarkdownRenderer text={contentToDisplay.text as string} />
             </div>
           </div>
@@ -201,7 +202,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center space-x-2">
                 <ImageIcon className="w-5 h-5 text-primary-700" />
-                <span className="font-medium text-primary-700">Image</span>
+                <span className="font-medium text-primary-700"> Image</span>
               </div>
               <div className="flex space-x-2">
                 {/* Edit Button */}
@@ -235,7 +236,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
           </div>
         )}
 
-        {/* Video Preview */}
+        {/* Video Preview
         {shouldDisplay('videoUrl') && (
           <div className="border rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center">
             <div className="w-full">
@@ -245,7 +246,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                   <span className="font-medium text-primary-700">Video</span>
                 </div>
                 <div className="flex space-x-2">
-                  {/* Edit Button */}
+
                   <button
                     onClick={() => {
                       const newVideoUrl = prompt('Enter new video URL:', contentToDisplay.videoUrl);
@@ -258,7 +259,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
-                  {/* Download Button */}
+
                   <button
                     onClick={() => handleDownload(contentToDisplay.videoUrl as string, 'mp4')}
                     className="p-1 text-green-600 hover:text-green-800 rounded-full transition-colors"
@@ -275,7 +276,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
               className="rounded-lg w-full h-auto"
             />
           </div>
-        )}
+        )} */}
 
         {/* Meme Preview */}
         {shouldDisplay('memeUrl') && (
@@ -283,7 +284,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center space-x-2">
                 <Smile className="w-5 h-5 text-primary-700" />
-                <span className="font-medium text-primary-700">Meme</span>
+                <span className="font-medium text-primary-700"> Meme</span>
               </div>
               <div className="flex space-x-2">
                 {/* Edit Button */}
