@@ -121,11 +121,11 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
 
         <div className="max-w-4xl mx-auto p-6 rounded-4xl space-y-8">
           {/* Guest Access Warning */}
-          {!ALLOW_GUEST && !isGuest && (
+          {/* {!ALLOW_GUEST && !isGuest && (
             <div className="mb-4 text-red-500 font-semibold">
               Guest access is disabled. Please register to generate content.
             </div>
-          )}
+          )} */}
 
           {/* Content Format Selector */}
           <div className="space-y-6">
