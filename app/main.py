@@ -12,7 +12,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://0.0.0.0:8000"],
+    allow_origins=["http://localhost:5173", "http://0.0.0.0:8000","*"],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
@@ -25,7 +25,6 @@ app.include_router(
 app.include_router(
     finetunememe_router, tags=["fine_tune_meme"], prefix="/fine_tune_meme"
 )
-
 app.include_router(
     content_analyser_router, tags=["content_analyser"], prefix="/content_analyser"
 )
