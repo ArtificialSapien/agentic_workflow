@@ -6,10 +6,11 @@ import ContentPromptInput from './ContentPromptInput';
 import ContentFormatSelector from './ContentFormatSelector';
 import ContentPreview from './ContentPreview';
 import { Mode, GeneratedContent } from '@/types/content';
-import { useGenerateContent, useRefineContent } from '@/hooks/useContentGeneration';
+import { useGenerateContent, useRefineContent, useRefineMeme } from '@/hooks/useContentGeneration';
 import useAuthStore from '@/store/useAuthStore';
 import Loader from '../ui/Loader';
 import ErrorMessage from '../ui/ErrorMessage';
+import { Meme } from '@/types/api';
 
 const ALLOW_GUEST = import.meta.env.VITE_ALLOW_GUEST === 'true';
 
@@ -37,12 +38,13 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
   // React Query Mutations
   const { mutate: generate, data: generatedData, status: generateStatus, error: genError } = useGenerateContent();
   const { mutate: refine, data: refinedData, status: refineStatus, error: refError } = useRefineContent();
+  const { mutate: refineMeme, data:refinedMemeData } = useRefineMeme();
 
   const generatedContent: GeneratedContent = {
     text: refinedData?.generated_text ?? generatedData?.generated_text ?? '',
     imageUrl: generatedData?.image_url ?? '',
     videoUrl: generatedData?.video_url ?? '',
-    memeUrl: generatedData?.meme?.meme_url ?? '',
+    memeUrl: refinedMemeData?.meme_url?? generatedData?.meme?.meme_url ?? '',
   };
 
   // Check if generation is allowed
@@ -92,6 +94,21 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
       }
     );
   };
+
+    // Handle refine content
+    const handleRefineMeme = (refinePrompt: string) => {
+      if (!refinePrompt.trim()) return;
+  
+      refineMeme(
+        { prompt: refinePrompt, meme: generatedData?.meme as Meme },
+        {
+          onError: (error) => {
+            console.error('Error refining content:', error);
+          },
+        }
+      );
+    };
+  
 
   return (
     <section
@@ -185,6 +202,7 @@ const ContentGeneratorSection: React.FC<ContentGeneratorSectionProps> = ({ odd }
         <ContentPreview 
           generatedContent={generatedContent} 
           onRefine={handleRefine} 
+          onRefineMeme={handleRefineMeme}
           onPublishAll={() => {}} 
           onSchedule={() => {}} 
           onRegenerateAll={() => {}} 

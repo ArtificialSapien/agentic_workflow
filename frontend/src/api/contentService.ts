@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { InitialRequest, InitialResponse, FineTuneTextRequest, FineTunedText, ContentAnalysisRequest, ContentAnalysisResponse } from '../types/api';
+import { InitialRequest, InitialResponse,Meme, FineTuneTextRequest, FineTunedText,FineTuneMemeRequest, ContentAnalysisRequest, ContentAnalysisResponse } from '../types/api';
 
 //TODO Set baseURL from env variable for flexibility
 const api = axios.create({
@@ -13,6 +13,10 @@ export async function generatePost(requestData: InitialRequest): Promise<Initial
 
 export async function finetunePost(requestData: FineTuneTextRequest): Promise<FineTunedText> {
   const response = await api.post<FineTunedText>('/fine_tune_text/finetune_post/', requestData);
+  return response.data;
+}
+export async function finetuneMeme(requestData: FineTuneMemeRequest): Promise<Meme> {
+  const response = await api.post<Meme>('/fine_tune_meme/finetune_meme/', requestData);
   return response.data;
 }
 
