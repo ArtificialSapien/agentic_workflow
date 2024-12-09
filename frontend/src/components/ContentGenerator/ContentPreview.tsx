@@ -24,6 +24,47 @@ interface ContentPreviewProps {
 
 const dummyGeneratedContent: GeneratedContent = {
   text: "🚀 Sample Text Post: AI is transforming the way we create content! Here's how:\n\n📈 Increased productivity by 300%\n💡 Enhanced creative output by 85%\n🎯 Boosted audience engagement by 90%\n\nWhat are your thoughts on AI-driven content creation?\n\n#AI #ContentCreation #Innovation",
+//   text: `# 🚀 This Week in Tech: Key Highlights
+
+// As we dive into the latest in technology and innovation, here are some noteworthy developments you won't want to miss:
+
+// - **🚗 AI and Safety Concerns**: Researchers have demonstrated that large language model (LLM)-powered robots can be hacked to act in dangerous ways, such as self-driving cars ignoring stop signs. This raises serious questions about safety protocols in AI development[^1].
+
+// - **📝 New Tools for Collaboration**: OpenAI has introduced ChatGPT Canvas, an AI-powered tool akin to Google Docs, allowing users to write and edit collaboratively. This is available for subscribers at $20/month, promising to enhance productivity[^2].
+
+// - **🍏 Apple's Strategic Moves**: Apple insists it’s right on time for the generative AI wave, opting for a product-level integration of AI rather than a standalone offering. This approach aligns with their long-term vision[^3].
+
+// - **🛡️ OpenAI in Defense**: OpenAI has partnered with defense startup Anduril, leveraging AI models to bolster air defense systems. This partnership follows a trend among tech giants establishing ties with the defense industry[^4].
+
+// - **💸 Crypto Lender Fallout**: Alex Mashinsky, the former CEO of Celsius, has pleaded guilty to fraud, admitting to misleading customers about the use of their funds. This incident highlights ongoing issues within the crypto space[^5].
+
+// - **🎙️ In-Depth with Sam Altman**: The latest episode of *Uncanny Valley* features a deep dive into Sam Altman’s journey, the CEO of OpenAI, exploring his influential role in the AI landscape[^6].
+
+// - **💰 OpenAI's New Subscription Model**: OpenAI has launched ChatGPT Pro, offering an enhanced experience for $200/month. This tier is expected to include exclusive AI model access and additional features[^7].
+
+// - **🤖 AI and Social Equity**: The rise of social-emotional AI raises concerns about equitable access to services traditionally provided by humans, posing challenges for less advantaged communities[^8].
+
+// - **🏛️ New AI & Crypto Czar**: David Sacks has been appointed by president-elect Trump to lead AI and crypto policy, a move welcomed by industry leaders as critical for American competitiveness[^9].
+
+// - **🌍 Canva Embraces AI**: CEO Melanie Perkins sees generative AI not as a threat but as an opportunity to enhance the visual creation process, with Canva continuing to democratize design[^10].
+
+// Stay informed and engaged with these updates that shape our digital landscape!
+
+// ---
+
+// ### Sources:
+// [^1]: [Wired - Researchers hacked several robots infused with large language models](https://www.wired.com/story/researchers-llm-ai-robot-violence/)  
+// [^2]: [Wired - How to use ChatGPT Canvas](https://www.wired.com/story/how-to-use-chatgpt-canvas-productivity/)  
+// [^3]: [Wired - The inside story of Apple Intelligence](https://www.wired.com/story/plaintext-the-inside-story-of-apple-intelligence/)  
+// [^4]: [Wired - OpenAI and Anduril defense partnership](https://www.wired.com/story/openai-anduril-defense/)  
+// [^5]: [Wired - Celsius founder pleads guilty](https://www.wired.com/story/celsius-founder-alex-mashinsky-pleads-guilty-to-fraud-crypto-celsius/)  
+// [^6]: [Wired - Uncanny Valley podcast on Sam Altman](https://www.wired.com/story/uncanny-valley-podcast-5-in-sam-altman-we-trust/)  
+// [^7]: [Wired - OpenAI ChatGPT Pro subscription launch](https://www.wired.com/story/openai-chatgpt-pro-subscription/)  
+// [^8]: [Wired - Wealth inequality and access to AI](https://www.wired.com/story/wealth-inequality-personal-service-access-artificial-intelligence/)  
+// [^9]: [Wired - David Sacks appointed as AI & Crypto Czar](https://www.wired.com/story/crypto-industry-hails-david-sacks-czar/)  
+// [^10]: [Wired - Canva CEO's perspective on generative AI](https://www.wired.com/story/canva-ceo-melanie-perkins-interview/)`
+//   ,
+
   imageUrl: "",//'https://via.placeholder.com/400x300?text=Sample+Image',
   // videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
   memeUrl: "", //'https://via.placeholder.com/400x300?text=Sample+Meme',
@@ -55,9 +96,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
   onRefine,
   onPublishAll,
   onSchedule,
-  onRegenerateAll,
-  onDownloadPack,
-  onShareAll,
+
 }) => {
   const [refinePrompt, setRefinePrompt] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'text' | 'image'  | 'meme'>('all'); //| 'video'
