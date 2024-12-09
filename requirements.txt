@@ -143,3 +143,4 @@ google-search-results
 bs4
 httpx
 strenum
+langchain_community

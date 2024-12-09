@@ -4,7 +4,7 @@ from typing import List
 from typing import TypedDict, Union
 import requests
 
-from app.models.base import AzureDallE3ImageGenerator
+from app.models.base import AzureDallE3ImageGenerator, LangChainDallEImageGenerator
 from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles, MemeTemplate, MemeCaptions
@@ -22,11 +22,14 @@ from app.web_crawler.summarizers import Summarizer, SummarizerUsingGroq
 # Load environment variables
 load_dotenv(override=True)
 
-# llm = AzureChatOpenAI(deployment_name="gpt-4o-mini")
-lim = AzureDallE3ImageGenerator(
-    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-    url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
-)
+# Initialize the image generator
+if os.getenv("LLM_PROVIDER") == "openai":
+    lim = LangChainDallEImageGenerator(api_key=os.getenv("OPENAI_API_KEY"))
+else:
+    lim = AzureDallE3ImageGenerator(
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
+    )
 
 # Initialize the LLM
 model_wrapper = ModelWrapper.initialize_from_env()
