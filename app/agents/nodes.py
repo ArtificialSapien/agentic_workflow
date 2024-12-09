@@ -189,7 +189,7 @@ def image_generator(state: AgentState):
             return {"generated_image_url": "Certain error occured"}
 
     else:
-        return {"generated_image_url": "Image generation was not requested"}
+        return {"generated_image_url": ""}
 
 
 def video_generator(state: AgentState):

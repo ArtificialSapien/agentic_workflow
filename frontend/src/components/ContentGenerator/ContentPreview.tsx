@@ -24,10 +24,10 @@ interface ContentPreviewProps {
 
 const dummyGeneratedContent: GeneratedContent = {
   text: "🚀 Sample Text Post: AI is transforming the way we create content! Here's how:\n\n📈 Increased productivity by 300%\n💡 Enhanced creative output by 85%\n🎯 Boosted audience engagement by 90%\n\nWhat are your thoughts on AI-driven content creation?\n\n#AI #ContentCreation #Innovation",
-  imageUrl: 'https://via.placeholder.com/400x300?text=Sample+Image',
-  videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-  memeUrl: 'https://via.placeholder.com/400x300?text=Sample+Meme',
-};
+  imageUrl: "",//'https://via.placeholder.com/400x300?text=Sample+Image',
+  // videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+  memeUrl: "", //'https://via.placeholder.com/400x300?text=Sample+Meme',
+}
 
 // Helper function to merge objects and replace empty strings with dummy data
 const mergeWithDummy = (content: GeneratedContent | null): GeneratedContent => {
