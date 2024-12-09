@@ -164,12 +164,11 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
               <div className="flex space-x-2">
                 {/* Edit Button */}
                 <button
-                  onClick={() => {
-                    const userPrompt = prompt('Enter your refine prompt:', '');
-                    if (userPrompt !== null && userPrompt.trim() !== '') {
-                      onRefine(userPrompt, contentToDisplay.text as string);
-                    }
-                  }}
+                onClick={() => {
+
+                  document.getElementById('refine_contend')?.scrollIntoView({ behavior: 'smooth' });
+
+                }}
                   className="p-1 text-blue-600 hover:text-blue-800 rounded-full transition-colors"
                   aria-label="Edit Text Post"
                 >
@@ -208,13 +207,12 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                 {/* Edit Button */}
                 <button
                   onClick={() => {
-                    const newImageUrl = prompt('Enter new image URL:', contentToDisplay.imageUrl);
-                    if (newImageUrl !== null && newImageUrl.trim() !== '') {
-                      onRefine(newImageUrl, '');
-                    }
+
+                    document.getElementById('refine_contend')?.scrollIntoView({ behavior: 'smooth' });
+
                   }}
                   className="p-1 text-blue-600 hover:text-blue-800 rounded-full transition-colors"
-                  aria-label="Edit Image"
+                  aria-label="Edit Text Post"
                 >
                   <Edit3 className="w-4 h-4" />
                 </button>
@@ -290,13 +288,12 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                 {/* Edit Button */}
                 <button
                   onClick={() => {
-                    const newMemeUrl = prompt('Enter new meme URL:', contentToDisplay.memeUrl);
-                    if (newMemeUrl !== null && newMemeUrl.trim() !== '') {
-                      onRefine(newMemeUrl, '');
-                    }
+
+                    document.getElementById('refine_contend')?.scrollIntoView({ behavior: 'smooth' });
+
                   }}
                   className="p-1 text-blue-600 hover:text-blue-800 rounded-full transition-colors"
-                  aria-label="Edit Meme"
+                  aria-label="Edit Text Post"
                 >
                   <Edit3 className="w-4 h-4" />
                 </button>
@@ -319,7 +316,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
         )}
       </div>
 
-      {/* Preview Actions */}
+      {/* Preview Actions
       <div className="mt-6 border-t pt-6 flex justify-between items-center">
         <div className="space-x-2">
           <button
@@ -344,11 +341,11 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
           <span className="mr-2">Share All</span>
           <Smile className="w-4 h-4" />
         </button>
-      </div>
+      </div> */}
 
       {/* Refine Input */}
       <div className="mt-6">
-        <div className="flex space-x-2">
+        <div className="flex space-x-2" id="refine_contend">
           <input
             type="text"
             placeholder="Refine your content..."

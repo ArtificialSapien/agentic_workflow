@@ -22,13 +22,13 @@ const ContentFormatSelector: React.FC<ContentFormatSelectorProps> = ({
   generateMeme,
   setGenerateMeme,
 }) => {
-  const allSelected = generateText && generateImage && generateVideo && generateMeme;
+  const allSelected = generateText && generateImage  && generateMeme; //&& generateVideo;
 
   const handleSelectAllToggle = () => {
     const newState = !allSelected;
     setGenerateText(newState);
     setGenerateImage(newState);
-    setGenerateVideo(newState);
+    // setGenerateVideo(newState);
     setGenerateMeme(newState);
   };
 
