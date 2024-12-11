@@ -144,9 +144,9 @@ bs4
 httpx
 strenum
 langchain_community
-jwt
 pyjwt
 passlib[bcrypt]
 sqlmodel
 psycopg2
 logger
+python-multipart # Required for fastapi
