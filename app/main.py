@@ -10,10 +10,9 @@ from app.api.content_analyser import router as content_analyser_router
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://0.0.0.0:8000","*"],
+    allow_origins=["http://localhost:5173", "http://0.0.0.0:8000", "*"],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
