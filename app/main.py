@@ -31,4 +31,4 @@ app.include_router(
     content_analyser_router, tags=["content_analyser"], prefix="/content_analyser"
 )
 
-app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
+# app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
