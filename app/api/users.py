@@ -145,8 +145,10 @@ class UserRepoUsingSQLModelPackage:
 
     def get_by_username(self, username: str) -> User | None:
         statement = select(User).where(User.username == username)
-        user = Session(self.engine).exec(statement).one()
-        return user
+        results = Session(self.engine).exec(statement)
+        if results is not None:
+            return results.one()
+        return None
 
 
 class UserRepoInMemory:
