@@ -264,8 +264,8 @@ def meme_generator(state: AgentState):
     caption_response = structure_llm.invoke(prompt)
 
     template_id = meme_template.id
-    username = "mmaazkhanhere"
-    password = "HelloWorld00."
+    username = os.getenv("IMGFLIP_USERNAME")
+    password = os.getenv("IMGFLIP_PASSWORD")
     box_count = meme_template.box_count
 
     texts = []
