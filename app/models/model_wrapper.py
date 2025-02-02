@@ -60,13 +60,13 @@ class ModelWrapper:
             except (TypeError, ValueError):
                 return default
 
-        common_keys = [
-            "MODEL_NAME",
-            "TEMPERATURE",
-            "MAX_TOKENS",
-            "TIMEOUT",
-            "MAX_RETRIES",
-        ]
+        # common_keys = [
+        #    "MODEL_NAME",
+        #    "TEMPERATURE",
+        #    "MAX_TOKENS",
+        #    "TIMEOUT",
+        #    "MAX_RETRIES",
+        # ]
         azure_keys = [
             "AZURE_DEPLOYMENT",
             "AZURE_API_KEY",
@@ -76,22 +76,24 @@ class ModelWrapper:
         openai_keys = ["OPENAI_API_KEY", "OPENAI_API_BASE"]
         gemini_keys = ["GEMINI_API_KEY"]
         groq_keys = ["GROQ_API_KEY"]
+        aimlapi_keys = ["AIMLAPI_API_KEY"]
 
         provider_keys = {
             "azure": azure_keys,
             "openai": openai_keys,
             "gemini": gemini_keys,
-            "groq": groq_keys
+            "groq": groq_keys,
+            "aimlapi": aimlapi_keys,
         }
 
         config = {}
 
         # Common keys
-        config["model"] = os.getenv("MODEL_NAME", "gpt-4")
-        config["temperature"] = to_float(os.getenv("TEMPERATURE"), 0.5)
+        config["model"] = os.getenv("MODEL_NAME")
+        config["temperature"] = to_float(os.getenv("TEMPERATURE"))
         config["max_tokens"] = to_int(os.getenv("MAX_TOKENS"))
         config["timeout"] = to_int(os.getenv("TIMEOUT"))
-        config["max_retries"] = to_int(os.getenv("MAX_RETRIES"), 3)
+        config["max_retries"] = to_int(os.getenv("MAX_RETRIES"))
 
         # Provider-specific keys
         if provider in provider_keys:
@@ -102,7 +104,6 @@ class ModelWrapper:
                     if os.getenv(key) is not None
                 }
             )
-
         return config
 
     @classmethod

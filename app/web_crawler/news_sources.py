@@ -39,6 +39,7 @@ class GoogleNewsSource(NewsSource):
     def fetch(self, search_parameters: dict = {"q": "artificial intelligence"}) -> None:
         GoogleSearch.SERP_API_KEY = self.__SERP_API_KEY
         search = GoogleSearch(search_parameters)
+        print(search.get_dict())
         self.__last_result = search.get_dict()
         with open("google_fetch.json", "w") as f:
             f.write(json.dumps(self.__last_result, indent=2))
@@ -63,13 +64,13 @@ class GoogleNewsSource(NewsSource):
                     if news_article_content is not None:
                         authors = ""
                         if "authors" in story["source"]:
-                            authors = '|'.join(story["source"]["authors"])
+                            authors = "|".join(story["source"]["authors"])
                         news_article = NewsArticle(
                             title=str(story["title"]),
                             date=str(story["date"]),
                             content=str(news_article_content),
                             author=str(authors),
-                            source=str(story["link"])
+                            source=str(story["link"]),
                         )
                         news_articles.append(news_article)
             else:
@@ -79,13 +80,13 @@ class GoogleNewsSource(NewsSource):
                 if news_article_content is not None:
                     authors = ""
                     if "authors" in story["source"]:
-                        authors = '|'.join(story["source"]["authors"])
+                        authors = "|".join(story["source"]["authors"])
                     news_article = NewsArticle(
                         title=str(story["title"]),
                         date=str(story["date"]),
                         content=str(news_article_content),
                         author=str(authors),
-                        source=str(story["link"])
+                        source=str(story["link"]),
                     )
                     news_articles.append(news_article)
 
@@ -95,10 +96,7 @@ class GoogleNewsSource(NewsSource):
         try:
             article_id = hashlib.md5(string=story["link"].encode("utf-8")).hexdigest()
             content = extract_text_from_website(story["link"])
-            return {
-                "article_id": article_id,
-                "content": content
-            }
+            return {"article_id": article_id, "content": content}
         except HTTPStatusError as e:
             print(f"Ignoring this story, problem with the content fetching: {e}")
         except BaseException as e:

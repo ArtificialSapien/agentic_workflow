@@ -4,7 +4,11 @@ from typing import List
 from typing import TypedDict, Union
 import requests
 
-from app.models.base import AzureDallE3ImageGenerator, LangChainDallEImageGenerator
+from app.models.base import (
+    AzureDallE3ImageGenerator,
+    LangChainDallEImageGenerator,
+    AIMLAPIImageGenerator,
+)
 from app.agents.data_models import NewsArticle
 from app.models.model_provider import ModelWrapper
 from app.agents.data_models import NewsArticles, MemeTemplate, MemeCaptions
@@ -19,6 +23,8 @@ from app.web_crawler.news_sources import GoogleNewsSource
 from app.web_crawler.query_encoder import QueryEncoder
 from app.web_crawler.summarizers import Summarizer, SummarizerUsingGroq
 
+from app.web_crawler.web_search import scrape_article
+
 # Load environment variables
 load_dotenv(override=True)
 
@@ -26,6 +32,7 @@ load_dotenv(override=True)
 if os.getenv("LLM_PROVIDER") == "openai":
     lim = LangChainDallEImageGenerator(api_key=os.getenv("OPENAI_API_KEY"))
 else:
+    # lim = AIMLAPIImageGenerator(api_key=os.getenv("AIMLAPI_API_KEY"), url=os.getenv("AIMLAPI_API_URL"))
     lim = AzureDallE3ImageGenerator(
         api_key=os.getenv("AZURE_OPENAI_API_KEY"),
         url=os.getenv("AZURE_OPENAI_DALLE3_ENDPOINT"),
@@ -84,33 +91,76 @@ def web_crawler(state: AgentState):
     """"""
     user_prompt = state["user_prompt"]
 
-    query_encoder = QueryEncoder()
-    news_source = GoogleNewsSource()
+    # query_encoder = QueryEncoder()
 
-    summarizer: Summarizer = SummarizerUsingGroq()
+    # summarizer: Summarizer = SummarizerUsingGroq()
 
-    topic = query_encoder.get_topic(state["user_prompt"])
+    prompt = f"""
+        Create a search query for collecting information based on the user's prompt.
 
-    news_source.fetch({"q": topic, "engine": "google_news", "gl": "us", "hl": "en"})
-    limit = os.getenv("MAX_NUMBER_OF_ARTICLES")
-    complete_news_articles = news_source.get_news_content(limit=5)
+        **Given:**
+            - User Prompt: {user_prompt}
+
+        **Your objectives are to:
+            1. Create a search query based on the user prompt.
+            2. Do not create any code - just a short few words.
+            3. If the topic explicitly mentioned in the user prompt, use it as is.
+        """
+    # topic = query_encoder.get_topic(user_prompt)
+    print(llm)
+    response = llm.invoke(prompt)
+    topic = response.content
+    print(prompt)
+    print(response)
+    print("****\ntopic: ", topic, "******")
+    print("user_prompt: ", user_prompt)
+    from serpapi import GoogleSearch
+
+    params = {
+        "engine": "google",
+        "q": topic,
+        "google_domain": "google.com",
+        "gl": "us",
+        "hl": "en",
+    }
+    params.update({"api_key": os.getenv("SERP_API_KEY")})
+
+    search = GoogleSearch(params)
+    results = search.get_dict()
 
     news_articles = []
-    for news_article in complete_news_articles:
-        short_text = summarizer.get_summary(str(news_article.content))
-        news_article.content = short_text
-        news_articles.append(news_article)
+    limit = 5
+    print(results)
+    for result in results["organic_results"][:limit]:
+        print(result["link"])
+        news_articles.append(scrape_article(result["link"]))
+
+    # news_source = GoogleNewsSource()
+
+    # summarizer: Summarizer = SummarizerUsingGroq()
+
+    # topic = query_encoder.get_topic(user_prompt)
+
+    # news_source.fetch({"q": topic, "engine": "google_news", "gl": "us", "hl": "en"})
+    # limit = os.getenv("MAX_NUMBER_OF_ARTICLES")
+    # complete_news_articles = news_source.get_news_content(limit=5)
+    # print('test')
+
+    # news_articles = []
+    # for news_article in complete_news_articles:
+    #    short_text = summarizer.get_summary(str(news_article.content))
+    #    news_article.content = short_text
+    #    news_articles.append(news_article)
 
     # TODOD creates news articles
     # news_articles = load_json_files_from_folder("./data/work/wired/output")
     # news_articles = [NewsArticle(title="cooking class", date="today", content="this is a cooking class story", author="myself", source="whatever.com")]
+    # print(news_articles)
     return {"news_articles": news_articles}
 
 
 def text_generator(state: AgentState):
-    """"""
-    # TODOD creates posts
-    """LangGraph node that will schedule tasks based on dependencies and team availability"""
+    """LangGraph node that will create the social mode post - textual componet"""
     news_articles = state["news_articles"]
     user_prompt = state["user_prompt"]
     content_style = state["content_style"]
@@ -148,7 +198,7 @@ def text_generator(state: AgentState):
 
 def image_generator(state: AgentState):
     """"""
-    # TODOD creates posts
+    # TODO creates posts
     """LangGraph node that will schedule tasks based on dependencies and team availability"""
     news_articles = state["news_articles"]
     user_prompt = state["user_prompt"]
@@ -161,6 +211,7 @@ def image_generator(state: AgentState):
             1. **Create:**
                 - Create a prompt based on the received news articles and initial user prompt to instruct the image generator to create an image.
                 - Ensure that the style, content are aligned with the provided context.
+                - Image should be landscape 16x9 aspect ratio.
         """
     if state["generate_image"] == True:
 
@@ -168,7 +219,7 @@ def image_generator(state: AgentState):
             prompt_for_image_generation: str = llm.invoke(
                 prompt_for_instructing_image_generation
             ).content
-            print(prompt_for_image_generation)
+            # print(prompt_for_image_generation)
 
             # Call the image generator API
             lim.generate_image(prompt_for_image_generation)

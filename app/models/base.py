@@ -20,6 +20,7 @@ class ImageGeneratorAPI(ABC):
         if self.image_generated:
             return self.image_url
 
+
 class LangChainDallEImageGenerator(ImageGeneratorAPI):
     """
     A LangChain-based DALL-E Image Generator extending the abstract ImageGeneratorAPI.
@@ -28,17 +29,19 @@ class LangChainDallEImageGenerator(ImageGeneratorAPI):
     def __init__(self, api_key: str):
         """
         Initialize the LangChain DALL-E Image Generator.
-        
+
         Args:
             api_key (str): OpenAI API key for authentication.
         """
-        super().__init__(api_key, url=None)  # URL is managed by LangChain's DALL-E Wrapper
+        super().__init__(
+            api_key, url=None
+        )  # URL is managed by LangChain's DALL-E Wrapper
         self.dalle = DallEAPIWrapper(api_key=api_key)
 
     def generate_image(self, prompt: str, size: str = "1024x1024", n: int = 1) -> bytes:
         """
         Generate an image using the provided prompt.
-        
+
         Args:
             prompt (str): The text prompt to generate an image.
             size (str): The size of the generated image (default: "1024x1024").
@@ -71,7 +74,6 @@ class LangChainDallEImageGenerator(ImageGeneratorAPI):
         return super().get_generated_images()
 
 
-
 # Azure Dall-e-3 subclass for a specific image generation API
 class AzureDallE3ImageGenerator(ImageGeneratorAPI):
     def __init__(self, api_key: str, url: str):
@@ -94,5 +96,34 @@ class AzureDallE3ImageGenerator(ImageGeneratorAPI):
         if response.status_code == 200:
             self.image_generated = True
             self.image_url = response.json()["data"][0]["url"]
+        else:
+            self.image_generated = False
+
+
+class AIMLAPIImageGenerator(ImageGeneratorAPI):
+    def __init__(self, api_key: str, url: str):
+        super().__init__(api_key, url)
+
+    def generate_image(self, prompt: str) -> None:
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}",
+        }
+
+        body = {
+            "provider": "fal-ai",
+            "num_images": 1,
+            "prompt": prompt,
+            "model": "flux/schnell",
+            "image_size": "landscape_16_9",
+        }
+        response = requests.post(self.url, headers=headers, json=body)
+        print(response.json())
+        print(self.api_key)
+
+        if response.status_code == 201:
+            self.image_generated = True
+            self.image_url = response.json()["images"][0]["url"]
+            print(self.image_url)
         else:
             self.image_generated = False
